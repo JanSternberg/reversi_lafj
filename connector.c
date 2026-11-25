@@ -23,7 +23,7 @@ int status = getaddrinfo(HOSTNAME, newPortnumber, &hints, &res );
 free(newPortnumber);
 if (status != 0) {
     perror("Could not pull addrinfo from connector");
-    return -1;
+        return -1;
 }
 
 // initiating connection on a socket
