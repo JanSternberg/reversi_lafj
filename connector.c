@@ -6,12 +6,14 @@
 #include <stdio.h>
 #include "config.h"
 
+int connectToServer(void) {
+
 // redefining PORTNUMBER as a char* so we can hand it over to function getaddrinfo
 int length = 4;
 char* newPortnumber = malloc(length + 1);
 snprintf(newPortnumber, length + 1, "%d", PORTNUMBER);
 
-// defining *res and hints structs and cleaning them so we get propper infos from getaddrinfo
+// defining *result and hints structs and cleaning them so we get propper infos from getaddrinfo
 struct addrinfo *result = NULL;
 struct addrinfo hints;
 memset(&hints, 0, sizeof(hints));
@@ -48,3 +50,4 @@ else if (check_connect == 0) {
 
 close(socked_fd);
 
+}
