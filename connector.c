@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "config.h"
+#include <unistd.h>
 
 int connectToServer(void) {
 
@@ -24,7 +25,7 @@ hints.ai_socktype = SOCK_STREAM;
 int status = getaddrinfo(HOSTNAME, newPortnumber, &hints, &result );
 free(newPortnumber);
 if (status != 0) {
-        printf("%s/n",gai_strerror(status));
+        printf("%s\n",gai_strerror(status));
         return -1;
 }
 
@@ -33,21 +34,23 @@ int socket_fd = socket(result -> ai_family, result -> ai_socktype, result -> ai_
 
 if (socket_fd == -1) {
     perror("Socket could not be established");
+    freeaddrinfo(result);
     return -1;
 }
 
 
 // initiating the connection to a server
-int check_connect = connect(socket_fc, result -> ai_addr, result -> ai_addrlen);
+int check_connect = connect(socket_fd, result -> ai_addr, result -> ai_addrlen);
 
 if (check_connect == -1) {
     perror("Could not connect to server!");
+    freeaddrinfo(result);
+    close(socket_fd);
     return -1;
 }
 else if (check_connect == 0) {
-    printf("Connection established successfully/n");
+    printf("Connection established successfully\n");
 }
-
-close(socked_fd);
-
+freeaddrinfo(result);
+return socket_fd;
 }
